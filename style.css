@@ -16,7 +16,12 @@ html {
 .container {
   width: 300px;
   box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   margin: 50px auto;
   padding: 15px;
@@ -27,8 +32,13 @@ html {
 
 .screen {
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   box-sizing: border-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   background-color: rgb(51, 56, 62);
   border-radius: 10px;
@@ -38,9 +48,16 @@ html {
 }
 
 .prevResult {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
   flex: 1;
   padding: 10px 10px 5px 10px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
   flex-direction: row-reverse;
   box-sizing: border-box;
   height: 39px;
@@ -49,8 +66,14 @@ html {
 
 .result {
   font-size: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
   flex-direction: row-reverse;
+  -ms-flex-wrap: wrap-reverse;
   flex-wrap: wrap-reverse;
   padding: 5px;
   overflow: hidden;
@@ -66,7 +89,9 @@ html {
   box-sizing: border-box;
   grid-template-rows: repeat(5, 1fr);
   grid-template-columns: repeat(4, 1fr);
+  display: -ms-grid;
   display: grid;
+  -webkit-transition: 1s;
   transition: 1s;
 }
 
@@ -74,8 +99,14 @@ html {
   box-sizing: border-box;
   border-radius: 50%;
   margin: 2px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   font-size: 23px;
   cursor: pointer;
@@ -118,12 +149,30 @@ html {
 .AC:active,
 .comma:active,
 .delete:active {
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncR type="linear" slope="1.2" /><feFuncG type="linear" slope="1.2" /><feFuncB type="linear" slope="1.2" /></feComponentTransfer></filter></svg>#filter');
+  -webkit-filter: brightness(1.2);
   filter: brightness(1.2);
+  -webkit-animation: Animasi 1s;
   animation: Animasi 1s;
+  -webkit-animation-timing-function: ease;
   animation-timing-function: ease;
 }
 
 /* Animasi pencet Number */
+@-webkit-keyframes Animasi {
+  0% {
+    border-radius: 50%;
+  }
+  12.5% {
+    border-radius: 40%;
+  }
+  25% {
+    border-radius: 30%;
+  }
+  100% {
+    border-radius: 25%;
+  }
+}
 @keyframes Animasi {
   0% {
     border-radius: 50%;
