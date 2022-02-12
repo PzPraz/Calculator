@@ -1,18 +1,18 @@
 const getSum = function (num1, o, num2) {
   if (o == "x") {
     o = "*";
-  } else if (o == "÷") {
+  } else if (o == "÷" || o == ":") {
     o = "/";
   }
   switch (o) {
     case "*":
-      return (hasil = num1 * num2);
+      return (hasil = Math.round(num1 * num2 * 1000) / 1000);
       break;
     case "+":
-      return (hasil = num1 + num2);
+      return (hasil = Math.round((num1 + num2) * 1000) / 1000);
       break;
     case "-":
-      return (hasil = num1 - num2);
+      return (hasil = Math.round((num1 - num2) * 1000) / 1000);
       break;
     case "/":
       return (hasil = Math.round((num1 / num2) * 1000) / 1000);
@@ -49,7 +49,7 @@ const prevInput = document.querySelector(".prevResult");
 
 numInput.forEach((num) => {
   num.addEventListener("click", () => {
-    if (result.textContent == 0 || result.textContent == "ERROR") {
+    if ((result.textContent == 0 && result.textContent.charAt(1) != ".") || result.textContent == "ERROR") {
       result.textContent = "";
       result.textContent += num.textContent;
       currentNum = parseFloat(result.textContent);
@@ -66,8 +66,8 @@ operatorInput.forEach((op) =>
     if (prevInput.textContent.includes(prevNum) && prevInput.textContent.includes("=")) {
       operator = op.textContent;
       prevNum = currentNum;
-      currentNum = 0;
-      result.textContent = currentNum;
+      currentNum = undefined;
+      result.textContent = 0;
       return (prevInput.textContent = prevNum + " " + operator);
     }
     if (prevNum != undefined && operator != undefined) {
@@ -79,8 +79,8 @@ operatorInput.forEach((op) =>
       operator = op.textContent;
       prevInput.textContent = currentNum + " " + operator;
       prevNum = currentNum;
-      currentNum = 0;
-      result.textContent = currentNum;
+      currentNum = undefined;
+      result.textContent = 0;
     } else if (operator != undefined) {
       operator = op.textContent;
     } else if (prevNum == undefined && operator == undefined) {
@@ -92,7 +92,7 @@ operatorInput.forEach((op) =>
   })
 );
 
-equal.addEventListener("click", () => {
+const getEqual = function () {
   if (prevInput.textContent.includes(prevNum) && prevInput.textContent.includes("=")) return false;
   if (currentNum == 0) return false;
   prevNom = currentNum;
@@ -100,7 +100,9 @@ equal.addEventListener("click", () => {
   prevInput.textContent = prevNum + " " + operator + " " + prevNom + " " + "=";
   result.textContent = currentNum;
   prevNom = undefined;
-});
+};
+
+equal.addEventListener("click", getEqual);
 
 function clear() {
   prevNum = undefined;
@@ -132,21 +134,25 @@ function factor() {
   if (a < 0 || a == undefined) return (result.textContent = "ERROR");
   prevInput.textContent = a + "!" + " =";
   currentNum = getFactorize(a); // call factorize
-  return (result.textContent = currentNum.toString());
+  result.textContent = currentNum;
+  return result.textContent.slice(0, result.textContent.length - 1);
 }
 
 function getFactorize(a) {
-  if (a == 0) return 1; // Factorize Function
+  if (a == 0) return 1; // base case
 
-  return a * getFactorize(a - 1);
+  return a * getFactorize(a - 1); // recursion
 }
 
-factorize.addEventListener("click", factor);
+factorize.addEventListener("click", () => {
+  factor();
+});
 
 function remove() {
   if (prevInput.textContent.includes("=")) {
     prevInput.textContent = 0;
     prevNum = undefined;
+    operator = undefined;
   }
   if (result.textContent.length == 1) {
     currentNum = 0;
@@ -166,3 +172,79 @@ function koma() {
 }
 
 comma.addEventListener("click", koma);
+
+/* Keyboard Input */
+
+const body = document.querySelector("body");
+
+body.addEventListener("keydown", (e) => {
+  if (e.key == "Backspace") remove();
+  if (e.key == "Enter") getEqual();
+  if (e.key == "c") clear();
+
+  if (e.key == "!") {
+    if (currentNum == 0 || currentNum == 1) return (result.textContent = 1);
+    factor();
+  }
+
+  if (e.key == "*" || e.key == "-" || e.key == ":" || e.key == "+") {
+    if (e.key == "-" && currentNum == undefined) {
+      return negatif();
+    }
+
+    if (prevInput.textContent.includes("=")) {
+      prevNum = currentNum;
+      operator = e.key;
+      currentNum = undefined;
+      result.textContent = 0;
+      if (operator == ":") operator = "÷";
+      return (prevInput.textContent = prevNum + " " + operator);
+    }
+    if (operator == e.key) return false;
+    if (operator != undefined) {
+      operator = e.key;
+    }
+    if (operator == undefined) operator = e.key;
+    if (currentNum != undefined) {
+      prevNum = currentNum;
+      currentNum = undefined;
+      result.textContent = 0;
+      if (operator == ":") operator = "÷";
+      return (prevInput.textContent = prevNum + " " + operator);
+    }
+    if (prevNum == undefined) {
+      prevNum = 0;
+      currentNum = undefined;
+      result.textContent = 0;
+      if (operator == ":") operator = "÷";
+      prevInput.textContent = prevNum + " " + operator;
+    }
+  }
+
+  let jablay;
+
+  if (result.textContent.length > 5) return false;
+  if (e.key >= 0 && e.key <= 9) {
+    if ((result.textContent == 0 && result.textContent.charAt(1) != ".") || result.textContent == "ERROR") {
+      result.textContent = "";
+      jablay = e.key;
+      result.textContent = jablay.toString();
+      return (currentNum = parseFloat(result.textContent));
+    } else {
+      jablay = e.key;
+      result.textContent += jablay.toString();
+      return (currentNum = parseFloat(result.textContent));
+    }
+  }
+  if (e.key == ".") {
+    koma();
+  }
+});
+
+numInput.forEach((num) => {
+  num.addEventListener("keydown", (e) => {
+    if (e.key == parseInt(numInput.textContent)) {
+      num.classList.add("play");
+    }
+  });
+});
