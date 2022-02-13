@@ -7,10 +7,47 @@ html {
 
 html {
   width: 100%;
+  height: 100%;
+}
+
+html {
+  display: flex;
+  align-items: center;
+}
+
+body {
+  width: 100%;
 }
 
 * {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.leftside {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: rgb(41, 42, 46);
+  border-radius: 15px;
+  height: 350px;
+  margin-right: 50px;
+  height: 150px;
+  color: rgb(90, 178, 241);
+}
+
+.leftside .ul li {
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 .container {
@@ -23,7 +60,6 @@ html {
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  margin: 50px auto;
   padding: 15px;
   padding-top: 20px;
   border-radius: 10px;
@@ -45,6 +81,15 @@ html {
   color: rgb(227, 227, 227);
   margin-bottom: 10px;
   box-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+
+.Keyboard {
+  margin-bottom: 10px;
+  color: rgb(195, 238, 208);
+}
+
+span {
+  color: rgb(227, 227, 227);
 }
 
 .prevResult {

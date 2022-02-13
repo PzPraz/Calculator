@@ -97,9 +97,15 @@ const getEqual = function () {
   if (currentNum == 0) return false;
   prevNom = currentNum;
   currentNum = getSum(prevNum, operator, currentNum);
-  prevInput.textContent = prevNum + " " + operator + " " + prevNom + " " + "=";
-  result.textContent = currentNum;
-  prevNom = undefined;
+  if (prevNom < 0) {
+    prevInput.textContent = prevNum + " " + operator + " " + "(" + prevNom + ")" + " " + "=";
+    result.textContent = currentNum;
+    prevNom = undefined;
+  } else {
+    prevInput.textContent = prevNum + " " + operator + " " + prevNom + " " + "=";
+    result.textContent = currentNum;
+    prevNom = undefined;
+  }
 };
 
 equal.addEventListener("click", getEqual);
